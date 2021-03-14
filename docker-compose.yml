@@ -1,0 +1,19 @@
+version: '3.5'
+services:
+  db:
+    image: postgres:9.6-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: eshop-db
+      POSTGRES_PASSWORD: bestPasswordEver
+      POSTGRES_USER: eshop-admin
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  cyran-front-end:
+    container_name: cyran-front-end
+    build: ./cyran-front-end
+    volumes:
+      - './cyran-front-end:/usr/src/app'
+    ports:
+      - '4200:4200'
