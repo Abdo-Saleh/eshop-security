@@ -75,7 +75,7 @@ export class ManageBoardComponent implements OnInit {
 
     this._ourHttpClient.post("http://localhost:8080/create/product", dictionary, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-        console.log(response);
+
         return dictionary;
       },
       (error)=>{
@@ -92,7 +92,7 @@ export class ManageBoardComponent implements OnInit {
     } else if(option == "email"){
       this.searchAccordingEmail(phrase);
     } else {
-      console.log("Unknown option to search!");
+
     }
   }
 
@@ -112,7 +112,7 @@ export class ManageBoardComponent implements OnInit {
 
     this._ourHttpClient.post("http://localhost:8080/name", dictionary, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-        console.log(response);
+
         this.elements = JSON.parse(response.toString());
         return dictionary;
       },
@@ -131,7 +131,7 @@ export class ManageBoardComponent implements OnInit {
       
       this._ourHttpClient.post("http://localhost:8080/changeEmail", dictionary, { responseType: 'text' as 'json' }).subscribe(
         (response)=>{
-          console.log(response);
+
           this.elements = JSON.parse(response.toString());
           this.doLastSearch();
           return dictionary;
@@ -151,7 +151,7 @@ export class ManageBoardComponent implements OnInit {
 
       this._ourHttpClient.post("http://localhost:8080/changeName", dictionary, { responseType: 'text' as 'json' }).subscribe(
         (response)=>{
-          console.log(response);
+
           this.elements = JSON.parse(response.toString());
           this.doLastSearch();
           return dictionary;
@@ -171,7 +171,7 @@ export class ManageBoardComponent implements OnInit {
 
     this._ourHttpClient.post("http://localhost:8080/email", dictionary, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-        console.log(response);
+
         this.elements = JSON.parse(response.toString());
         return dictionary;
       },

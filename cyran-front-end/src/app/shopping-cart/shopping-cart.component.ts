@@ -26,16 +26,16 @@ export class ShoppingCartComponent implements OnInit {
     var i:number;
     var k:number;
     var idOrder:string;
-    var priceInputs:any;
-    console.log("DELETE!!");
-    console.log(class_component);
+    var priceInputs: any;
+    
+
 
     for(i=0; i< productParts.length; i=i + 1){
-      console.log(productParts[i])
+
       idOrder =class_component.split('-').reverse()[0];
       priceInputs = document.getElementsByClassName("price-prod-" + idOrder);
       var priceOneInputs:any = document.getElementsByClassName("price-one-" + idOrder);
-      console.log("Hele: "+ idOrder);
+
       for(k=0; k< priceInputs.length; k=k + 1){
         priceInputs[k].innerHTML = "0.0 &euro;";
         priceOneInputs[k].value = 0;
@@ -55,7 +55,7 @@ export class ShoppingCartComponent implements OnInit {
     this.increaseFromCart(product_title);
 
     for(i=0; i< counterInputs.length; i=i + 1){
-      console.log(counterInputs[i])
+
       counterInputs[i].value = parseInt(counterInputs[i].value) + 1;
       this.updateLocalPrice(class_component.split('-').reverse()[0], false);
     }
@@ -69,7 +69,7 @@ export class ShoppingCartComponent implements OnInit {
   
 
     for(i=0; i< counterInputs.length; i=i + 1){
-      console.log(counterInputs[i])
+
       if(counterInputs[i].value - 1 >= 0){
         counterInputs[i].value = parseInt(counterInputs[i].value) - 1;
         this.updateLocalPrice(class_component.split('-').reverse()[0], false);
@@ -79,7 +79,7 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   public updateLocalPrice(order: string, deleted:boolean): void{
-    console.log("value "+ order);
+
     var counterInputs:any = document.getElementsByClassName("counter-" + order);
     var priceInputs:any = document.getElementsByClassName("price-prod-" + order);
     var priceOneInputs:any = document.getElementsByClassName("price-one-" + order);
@@ -97,22 +97,22 @@ export class ShoppingCartComponent implements OnInit {
       var wholePrice:number;
       var i:number;
       wholePrice = 0.0;
-      console.log( priceArrays.length);
+
       for(i=0; i< priceArrays.length; i=i + 1){
-        console.log(priceArrays[i].innerHTML);
+
         wholePrice = wholePrice + parseFloat(priceArrays[i].innerHTML.split(" &euro;")[0]);
       }
 
       wholePrice = wholePrice / 2.0;
-      console.log("WHOLE: ");
-      console.log(wholePrice);
+
+
       for(i=0; i< finalPriceArray.length; i=i + 1){
         finalPriceArray[i].innerHTML = wholePrice.toString() + " &euro;";
       }
     }
 
   public getProducts(): any{
-    console.log(localStorage.getItem("shoppingCartProducts"));
+
     var cartString = localStorage.getItem("shoppingCartProducts");
     if(cartString === null){
       return null;
@@ -129,7 +129,7 @@ export class ShoppingCartComponent implements OnInit {
     if(cartString !== null){
       var dictionary = JSON.parse(cartString);
       if( title in dictionary){
-        console.log("Delete");
+
         delete dictionary[title];
         localStorage.setItem("shoppingCartProducts", JSON.stringify(dictionary));
       }
@@ -156,7 +156,7 @@ export class ShoppingCartComponent implements OnInit {
           dictionary[title]['quantity'] = dictionary[title]['quantity'] - 1;
           localStorage.setItem("shoppingCartProducts", JSON.stringify(dictionary));
         } else {
-          console.log("DELETE");
+
           this.deleteComponent(class_component, title);
         }        
       }

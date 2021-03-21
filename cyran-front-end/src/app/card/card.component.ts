@@ -119,7 +119,7 @@ export class CardComponent implements OnInit {
 
     this._ourHttpClient.post("http://localhost:8080/create/product", dictionary, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-        console.log(response);
+
         return dictionary;
       },
       (error)=>{
@@ -168,7 +168,7 @@ export class CardComponent implements OnInit {
   public getFirstSixProducts(): any {
     return this._ourHttpClient.get("http://localhost:8080/products").subscribe(
       (response)=>{
-        console.log(response);
+
       },
       (error)=>{
         console.error(error);

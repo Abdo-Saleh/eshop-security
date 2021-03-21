@@ -37,7 +37,7 @@ export class RegisterComponent implements OnInit {
   }
 
   public setUserOld(user:any):any {
-    console.log(user.name);
+
     const salt = bcrypt.genSaltSync(10);
     const passBCrypt1 = bcrypt.hashSync(user.password, salt);
     var newUser = {}
@@ -45,8 +45,8 @@ export class RegisterComponent implements OnInit {
     newUser['password'] = passBCrypt1;
     //users/register/name/{username}/password/{password}
     return this._ourHttpClient.post("http://localhost:8080/register", newUser ).subscribe(
-      (response)=>{
-        console.log(response);
+      (response) => {
+        
 
         if( response!= null){
           this.router.navigateByUrl('/signin');
@@ -61,7 +61,7 @@ export class RegisterComponent implements OnInit {
   }
 
   public setUser(user:any):any {
-    console.log(user.name);
+
     const salt = bcrypt.genSaltSync(10);
     const passBCrypt1 = bcrypt.hashSync(user.password, salt);
     var newUser = {}
@@ -72,7 +72,7 @@ export class RegisterComponent implements OnInit {
     //users/register/name/{username}/password/{password}
     return this._ourHttpClient.post("http://localhost:8080/signup", newUser, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-        console.log(response);
+
 
         if( response!= null){
           this.router.navigateByUrl('/signin');

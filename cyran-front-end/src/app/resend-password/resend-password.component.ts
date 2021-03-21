@@ -36,7 +36,7 @@ export class ResendPasswordComponent implements OnInit {
 
     this._ourHttpClient.post("http://localhost:8080/changePasswd", dictionary, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-        console.log(response);
+
         this.emailWithPasswordHasBeenSentInfo();
         this.router.navigateByUrl('/signin');
         return;
@@ -52,7 +52,7 @@ export class ResendPasswordComponent implements OnInit {
     var purePassword: string = CryptoJS.lib.WordArray.random(20).toString();
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword:string = bcrypt.hashSync(purePassword, salt);
-    console.log(form['email']);
+
 
     this.searchAccordingName(form['email'], purePassword, hashedPassword)
   }

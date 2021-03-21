@@ -74,7 +74,7 @@
     
 //         this._ourHttpClient.post("http://localhost:8080/create/product", dictionary, { responseType: 'text' as 'json' }).subscribe(
 //           (response) => {
-//             console.log(response);
+//             
 //             return dictionary;
 //           },
 //           (error) => {
@@ -176,7 +176,7 @@
 //         map(([store, cart, tot, checkout]: any) => ({ store, cart, tot, checkout })),
 //         tap(state => {
 //             if (state.checkout) {
-//                 console.log('checkout', state);
+//                 
 //             }
 //         }),
 //         // make sure we share to the world! or just the entire app

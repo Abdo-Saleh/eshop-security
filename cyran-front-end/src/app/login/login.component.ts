@@ -31,25 +31,25 @@ export class LoginComponent implements OnInit {
   }
 
   public getUserOld(user:any):any {
-    console.log(user.name);
+
       return this._ourHttpClient.get("http://localhost:8080/getUser?name=" + user.name).subscribe(
         (response)=>{
-          console.log(response);
+
           const salt = bcrypt.genSaltSync(10);
   
           if( bcrypt.compareSync(user.password,response['password'], function(err, res) {
             if (err){
-              console.log("Bad");
+
               this._auth.getUserDetails(user.name, user.password);
               return false;
             }
             if (res) {
-              console.log("Good");
+
               localStorage.setItem("loggedIn",user.name);
               this._auth.setLoggedIn(true, user.name);
               return true;
             }
-            console.log("nothing")
+
             return false;
           }) == true){
             this._auth.setLoggedIn(true, user.name);
@@ -66,30 +66,30 @@ export class LoginComponent implements OnInit {
   }
 
   public getUser(user:any):any {
-    console.log(user.name);
+
       return this._ourHttpClient.get("http://localhost:8080/login?name=" + user.name).subscribe(
         (response)=>{
-          console.log(response);
+
           const salt = bcrypt.genSaltSync(10);
   
           if( bcrypt.compareSync(user.password,response['password'], function(err, res) {
             if (err){
-              console.log("Bad");
+
               this._auth.getUserDetails(user.name, user.password);
               return false;
             }
             if (res) {
-              console.log("Good");
+
               localStorage.setItem("loggedIn",user.name);
               this._auth.setLoggedIn(true, user.name);
               
               return true;
             }
-            console.log("nothing")
+
             return false;
           }) == true){
             this._auth.setLoggedIn(true, user.name);
-            console.log(response['priviledges']);
+
             this._auth.setRole(true, response['priviledges']);
 
             this.router.navigateByUrl('/');
@@ -110,7 +110,7 @@ export class LoginComponent implements OnInit {
 
     this._ourHttpClient.post("http://localhost:8080/priviledges", dictionary, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-        console.log(response);
+
 
         localStorage.setItem('priviledge',response['priviledge']);
         return dictionary;

@@ -56,7 +56,7 @@ export class AdminComponent implements OnInit {
 
     this._ourHttpClient.post("http://localhost:8080/setRole", dictionary, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-        console.log(response);
+
         return dictionary;
       },
       (error)=>{
@@ -73,7 +73,7 @@ export class AdminComponent implements OnInit {
 
     this._ourHttpClient.post("http://localhost:8080/getRole", dictionary, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-        console.log(response);
+
         return response;
       },
       (error)=>{
@@ -91,7 +91,7 @@ export class AdminComponent implements OnInit {
     } else if(option == "email"){
       this.searchAccordingEmail(phrase);
     } else {
-      console.log("Unknown option to search!");
+
     }
   }
 
@@ -111,7 +111,7 @@ export class AdminComponent implements OnInit {
 
     this._ourHttpClient.post("http://localhost:8080/name", dictionary, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-        console.log(response);
+
         this.elements = JSON.parse(response.toString());
         return dictionary;
       },
@@ -131,7 +131,7 @@ export class AdminComponent implements OnInit {
 
     this._ourHttpClient.post("http://localhost:8080/email", dictionary, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-        console.log(response);
+
         this.elements = JSON.parse(response.toString());
         return dictionary;
       },

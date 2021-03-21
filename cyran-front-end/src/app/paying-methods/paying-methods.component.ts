@@ -130,13 +130,13 @@ export class PayingMethodsComponent implements OnInit {
       this.order.creditCardInfo.cvc = "none";
     }
 
-    console.log(this.order)
+    
 
 
     return this._ourHttpClient.post("http://localhost:8080/create/order", this.order).subscribe(
       (response) => {
-        console.log(response);
-        console.log(response['order']['products'])
+
+
         if (response != null) {
           if(response['order']['payed']){
             localStorage.removeItem("shoppingCartProducts");

@@ -100,7 +100,7 @@ export class DeliveryInfoComponent implements OnInit {
 
     localStorage.setItem("deliveryInfo", JSON.stringify(deliveryData));
 
-    console.log(this.name !== "undefined")
+
 
     if (this.name && this.surname && this.address)
       this.router.navigateByUrl('/paying-methods');

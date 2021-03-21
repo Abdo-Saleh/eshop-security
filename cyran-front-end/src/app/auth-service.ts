@@ -10,8 +10,8 @@ export class AuthService {
 
     setLoggedIn(value: boolean, name: string): void {
         this.loggedInStatus = value;
-        console.log('setting');
-        console.log(this.loggedInStatus);
+
+
         localStorage.setItem("loggedIn", name);
     }
 
@@ -25,7 +25,7 @@ export class AuthService {
             this.isAdmin = true;
             this.isAssistant = true;
         } else if(role == "assistant"){
-            console.log('REACHTED');
+
             this.isAdmin = false;
             this.isAssistant = true;
         } else {
@@ -36,8 +36,8 @@ export class AuthService {
 
     setRole(value: boolean, role:string): void {
         this.applyRoleHierarchy(role);
-        console.log('setting');
-        console.log(this.loggedInStatus);
+
+
         localStorage.setItem("role", role);
     }
 
@@ -52,7 +52,7 @@ export class AuthService {
 
     getIsAssistant(): boolean {
         var role = localStorage.getItem('role');
-        console.log(role);
+
         if(role != null){
             
             this.applyRoleHierarchy(role);
