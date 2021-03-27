@@ -64,6 +64,8 @@ public class UserControllerRDBS {
 
 	@Autowired
     private PriviledgesRepository priviledgesRepository;
+	
+	private static boolean LOCAL_DEPLOY =  true;
 
     /**
      * Method for registering user
@@ -476,21 +478,36 @@ public class UserControllerRDBS {
      */
     private void sendmail(String email, String purePassword) throws AddressException, MessagingException, IOException {
         Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-        props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-
+		
+		if(LOCAL_DEPLOY){
+			props.put("mail.smtp.ssl.trust", "localhost");
+			props.put("mail.smtp.host", "localhost");
+			props.put("mail.smtp.port", "1025"); //mailhog port
+		} else {
+			props.put("mail.smtp.ssl.trust", "smtp.gmail.com"); //not for local deploy
+			props.put("mail.smtp.host", "smtp.gmail.com"); //not for local deploy
+			props.put("mail.smtp.port", "587"); //not for local deploy
+		}
+		
+		
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("tutorialeshop@gmail.com", "tutorial123456");
+				if(LOCAL_DEPLOY){
+					return new PasswordAuthentication("tutorialeshop@tutorialeshop.com", "tutorial123456"); //non existing email
+				} else {
+					return new PasswordAuthentication("tutorialeshop@gmail.com", "tutorial123456"); //not for local deploy
+				}
             }
         });
         Message msg = new MimeMessage(session);
-        msg.setFrom(new InternetAddress("tutorialeshop@gmail.com", false));
-
+		if(LOCAL_DEPLOY){
+			msg.setFrom(new InternetAddress("tutorialeshop@tutorialeshop.com", false)); //non existing email
+		} else {
+			msg.setFrom(new InternetAddress("tutorialeshop@gmail.com", false));  //not for local deploy	
+		}
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
         msg.setSubject("Passsword change in security eshop");
         msg.setContent("Passsword change in security eshop", "text/html");
