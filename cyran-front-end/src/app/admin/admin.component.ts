@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { LoggingErrorsService } from '../services/logging-errors.service';
 
 export interface PeriodicElement {
   id: number;
@@ -31,7 +32,7 @@ export class AdminComponent implements OnInit {
   optionRole: string;
 
 
-  constructor(private _ourHttpClient: HttpClient) { }
+  constructor(private _ourHttpClient: HttpClient, private _loggingErrorsService: LoggingErrorsService) { }
 
   ngOnInit(): void {
     //this.test();
@@ -61,6 +62,7 @@ export class AdminComponent implements OnInit {
       },
       (error)=>{
         console.error(error);
+        this._loggingErrorsService.captureError(error);
         return dictionary;
       });
 
@@ -78,6 +80,7 @@ export class AdminComponent implements OnInit {
       },
       (error)=>{
         console.error(error);
+        this._loggingErrorsService.captureError(error);
         return dictionary;
       });
 
@@ -117,6 +120,7 @@ export class AdminComponent implements OnInit {
       },
       (error)=>{
         console.error(error);
+        this._loggingErrorsService.captureError(error);
         return dictionary;
       });
 
@@ -137,6 +141,7 @@ export class AdminComponent implements OnInit {
       },
       (error)=>{
         console.error(error);
+        this._loggingErrorsService.captureError(error);
         return dictionary;
       });
 

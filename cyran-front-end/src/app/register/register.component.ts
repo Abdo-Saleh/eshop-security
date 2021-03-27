@@ -5,6 +5,8 @@ import { Router } from '@angular/router'
 import { HttpClient } from '@angular/common/http';
 import * as bcrypt from 'bcryptjs';
 import { UserCreatedComponent } from '../info-snackbars/user-created/user-created.component';
+import { LoggingErrorsService } from '../services/logging-errors.service';
+
 
 @Component({
   selector: 'app-register',
@@ -16,7 +18,8 @@ export class RegisterComponent implements OnInit {
   errorMessage = "invalid "
   form: FormGroup
   errorb
-  constructor(private _ourHttpClient:HttpClient, private _snackBar: MatSnackBar, private router: Router) { }
+  constructor(private _ourHttpClient:HttpClient, private _snackBar: MatSnackBar, 
+    private router: Router, private _loggingErrorsService: LoggingErrorsService) { }
 
   name:string;
   password: string;
@@ -57,6 +60,7 @@ export class RegisterComponent implements OnInit {
       },
       (error)=>{
         console.error(error);
+        this._loggingErrorsService.captureError(error);
       })
   }
 
@@ -83,6 +87,7 @@ export class RegisterComponent implements OnInit {
       },
       (error)=>{
         console.error(error);
+        this._loggingErrorsService.captureError(error);
       })
   }
 

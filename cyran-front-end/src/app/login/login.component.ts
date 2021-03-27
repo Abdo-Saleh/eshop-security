@@ -8,6 +8,8 @@ import { MessageComponent } from '../message/message.component';
 import * as bcrypt from 'bcryptjs';
 import { AuthService } from '../auth-service';
 import { UserLoggedInComponent } from '../info-snackbars/user-logged-in/user-logged-in.component';
+import { LoggingInfoService } from '../services/logging-info.service';
+import { LoggingErrorsService } from '../services/logging-errors.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,8 @@ import { UserLoggedInComponent } from '../info-snackbars/user-logged-in/user-log
 export class LoginComponent implements OnInit {
   form: FormGroup
 
-  constructor(private _ourHttpClient:HttpClient, private _snackBar: MatSnackBar, private router: Router, private _auth: AuthService) { }
+  constructor(private _ourHttpClient:HttpClient, private _snackBar: MatSnackBar, private router: Router,
+     private _auth: AuthService, private _loggingInfoService :LoggingInfoService, private _loggingErrorsService: LoggingErrorsService) { }
   customer: any;
   name:string;
   password: string;
@@ -62,6 +65,7 @@ export class LoginComponent implements OnInit {
         },
         (error)=>{
           console.error(error);
+          this._loggingErrorsService.captureError(error);
         })
   }
 
@@ -69,9 +73,8 @@ export class LoginComponent implements OnInit {
 
       return this._ourHttpClient.get("http://localhost:8080/login?name=" + user.name).subscribe(
         (response)=>{
-
+          
           const salt = bcrypt.genSaltSync(10);
-  
           if( bcrypt.compareSync(user.password,response['password'], function(err, res) {
             if (err){
 
@@ -91,6 +94,8 @@ export class LoginComponent implements OnInit {
             this._auth.setLoggedIn(true, user.name);
 
             this._auth.setRole(true, response['priviledges']);
+            this._loggingInfoService.user_logged_as_admin(response['priviledges']);
+            this._loggingInfoService.user_logged_as_assistent(response['priviledges']);
 
             this.router.navigateByUrl('/');
           } else {
@@ -100,6 +105,7 @@ export class LoginComponent implements OnInit {
         },
         (error)=>{
           console.error(error);
+          this._loggingErrorsService.captureError(error);
         })
   }
 
@@ -117,6 +123,7 @@ export class LoginComponent implements OnInit {
       },
       (error)=>{
         console.error(error);
+        this._loggingErrorsService.captureError(error);
         return dictionary;
       });
 

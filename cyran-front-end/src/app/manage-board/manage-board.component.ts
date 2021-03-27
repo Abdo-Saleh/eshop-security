@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProductCreatedComponent } from '../info-snackbars/product-created/product-created.component';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { LoggingInfoService } from '../services/logging-info.service';
+import { LoggingErrorsService } from '../services/logging-errors.service';
 
 export interface PeriodicElement {
   id: number;
@@ -41,7 +43,8 @@ export class ManageBoardComponent implements OnInit {
   newName: string;
   newEmail: string;
 
-  constructor(private _ourHttpClient: HttpClient, private _snackBar: MatSnackBar,) { }
+  constructor(private _ourHttpClient: HttpClient, private _snackBar: MatSnackBar, 
+    private _loggingInfoService :LoggingInfoService, private _loggingErrorsService: LoggingErrorsService) { }
 
   ngOnInit(): void {
     this.searchAccordingEmail("ja");
@@ -80,6 +83,7 @@ export class ManageBoardComponent implements OnInit {
       },
       (error)=>{
         console.error(error);
+        this._loggingErrorsService.captureError(error);
         return dictionary;
       });
 
@@ -118,6 +122,7 @@ export class ManageBoardComponent implements OnInit {
       },
       (error)=>{
         console.error(error);
+        this._loggingErrorsService.captureError(error);
         return dictionary;
       });
 
@@ -128,7 +133,8 @@ export class ManageBoardComponent implements OnInit {
       var newEmail = (document.getElementById("email-" + id.toString())as HTMLInputElement).value;
       dictionary['oldEmail'] = oldEmail;
       dictionary['newEmail'] = newEmail;
-      
+      this._loggingInfoService.admin_email_changed(oldEmail);
+            
       this._ourHttpClient.post("http://localhost:8080/changeEmail", dictionary, { responseType: 'text' as 'json' }).subscribe(
         (response)=>{
 
@@ -138,6 +144,7 @@ export class ManageBoardComponent implements OnInit {
         },
         (error)=>{
           console.error(error);
+          this._loggingErrorsService.captureError(error);
           return dictionary;
         });
 
@@ -158,6 +165,7 @@ export class ManageBoardComponent implements OnInit {
         },
         (error)=>{
           console.error(error);
+          this._loggingErrorsService.captureError(error);
           return dictionary;
         });
 
@@ -177,6 +185,7 @@ export class ManageBoardComponent implements OnInit {
       },
       (error)=>{
         console.error(error);
+        this._loggingErrorsService.captureError(error);
         return dictionary;
       });
 
