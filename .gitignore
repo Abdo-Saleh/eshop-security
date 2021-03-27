@@ -3,3 +3,6 @@ cyran-front-end/node_modules/
 
 whois/node_modules/
 whois/node_modules/*
+
+sentryDataAccess/.idea/*
+sentryDataAccess/.idea/
