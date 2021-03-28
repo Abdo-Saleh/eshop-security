@@ -78,6 +78,7 @@ services:
       - "5001:5001"
     networks:
       - buildernet
+    restart: on-failure
 networks:
   buildernet:
     driver: "bridge"
