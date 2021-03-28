@@ -6,6 +6,7 @@ import * as CryptoJS from 'crypto-js';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PasswordSendToEmailComponent } from '../info-snackbars/password-send-to-email/password-send-to-email.component';
+import { LoggingErrorsService } from '../services/logging-errors.service';
 
 @Component({
   selector: 'app-resend-password',
@@ -14,7 +15,8 @@ import { PasswordSendToEmailComponent } from '../info-snackbars/password-send-to
 })
 export class ResendPasswordComponent implements OnInit {
 
-  constructor(private _ourHttpClient:HttpClient, private _snackBar:MatSnackBar, private router:Router) { }
+  constructor(private _ourHttpClient:HttpClient, private _snackBar:MatSnackBar, 
+    private router:Router, private _loggingErrorsService: LoggingErrorsService) { }
   
   form: FormGroup;
   email: string;
@@ -43,6 +45,7 @@ export class ResendPasswordComponent implements OnInit {
       },
       (error)=>{
         console.error(error);
+        this._loggingErrorsService.captureError(error);
         return;
       });
 
@@ -52,7 +55,6 @@ export class ResendPasswordComponent implements OnInit {
     var purePassword: string = CryptoJS.lib.WordArray.random(20).toString();
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword:string = bcrypt.hashSync(purePassword, salt);
-
 
     this.searchAccordingName(form['email'], purePassword, hashedPassword)
   }

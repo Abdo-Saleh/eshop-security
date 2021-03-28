@@ -3,6 +3,7 @@ import { Router } from '@angular/router'
 import { HttpClient } from '@angular/common/http';
 import { AddedToChartComponent } from '../info-snackbars/added-to-chart/added-to-chart.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LoggingErrorsService } from '../services/logging-errors.service';
 
 @Component({
   selector: 'app-card',
@@ -11,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class CardComponent implements OnInit {
 
-  constructor(private _ourHttpClient:HttpClient, private _snackBar: MatSnackBar) { }
+  constructor(private _ourHttpClient:HttpClient, private _snackBar: MatSnackBar, private _loggingErrorsService: LoggingErrorsService) { }
 
   ngOnInit(): void {
     if(false){
@@ -124,6 +125,7 @@ export class CardComponent implements OnInit {
       },
       (error)=>{
         console.error(error);
+        this._loggingErrorsService.captureError(error);
         return dictionary;
       });
 
@@ -152,6 +154,7 @@ export class CardComponent implements OnInit {
         try {
           shoppingCartProducts = JSON.parse(shoppingCartProducts );
         } catch(err) {
+          this._loggingErrorsService.captureError(err);
           shoppingCartProducts = {};
         }  
       }
@@ -171,6 +174,7 @@ export class CardComponent implements OnInit {
 
       },
       (error)=>{
+        this._loggingErrorsService.captureError(error);
         console.error(error);
       });
   }

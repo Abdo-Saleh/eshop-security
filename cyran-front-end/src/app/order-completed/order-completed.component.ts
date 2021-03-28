@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoggingInfoService } from '../services/logging-info.service';
 
 @Component({
   selector: 'app-order-completed',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrderCompletedComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _loggingInfoService :LoggingInfoService) { }
 
   products:any;
 
@@ -19,6 +20,7 @@ export class OrderCompletedComponent implements OnInit {
     var string = localStorage.getItem("boughtProducts");
     var boughtProducts;
     if(string != null){
+      this._loggingInfoService.user_bought_free_products();
       return boughtProducts = JSON.parse(string);
     }
     return []

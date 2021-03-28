@@ -46,6 +46,28 @@ import { BoughtOrderPreparedComponent } from './info-snackbars/bought-order-prep
 import { UserLoggedInComponent } from './info-snackbars/user-logged-in/user-logged-in.component';
 import { UserLoggedOutComponent } from './info-snackbars/user-logged-out/user-logged-out.component';
 
+import * as Raven from 'raven-js';
+
+Raven.config('https://712f212178c64dd8bb90e045eeb51f98@o517887.ingest.sentry.io/5694911').install();
+/*
+import * as Sentry from "@sentry/browser";
+import { Integrations } from "@sentry/tracing";
+
+Sentry.init({
+  dsn: "https://712f212178c64dd8bb90e045eeb51f98@o517887.ingest.sentry.io/5694911",
+
+  // Alternatively, use `process.env.npm_package_version` for a dynamic release version
+  // if your build tool supports it.
+  release: "my-project-name@2.3.12",
+  integrations: [new Integrations.BrowserTracing()],
+  s
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+
+});
+*/
 @NgModule({
   declarations: [
     AppComponent,
@@ -87,7 +109,7 @@ import { UserLoggedOutComponent } from './info-snackbars/user-logged-out/user-lo
     ReactiveFormsModule,
     BrowserAnimationsModule,
     FormsModule,
-    HttpClientModule, 
+    HttpClientModule,
   ],
   providers: [AuthGuard, AuthService,StorageService, AdminGuard, ShopAssistentGuard],
   bootstrap: [AppComponent]
