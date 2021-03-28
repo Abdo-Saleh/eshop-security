@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 
 import javassist.NotFoundException;
@@ -65,6 +66,8 @@ public class UserControllerRDBS {
 	@Autowired
     private PriviledgesRepository priviledgesRepository;
 	
+	@Value("${hostIp}")
+	private String hostIp;
 	private static boolean LOCAL_DEPLOY =  true;
 
     /**
@@ -483,8 +486,10 @@ public class UserControllerRDBS {
         props.put("mail.transport.protocol", "smtp");
 		
 		if(LOCAL_DEPLOY){
-			props.put("mail.smtp.ssl.trust", "localhost");
-			props.put("mail.smtp.host", "localhost");
+			System.out.println("------------------------------------------------");
+			System.out.println(hostIp);
+			props.put("mail.smtp.ssl.trust", hostIp);
+			props.put("mail.smtp.host", hostIp);
 			props.put("mail.smtp.port", "1025"); //mailhog port
 		} else {
 			props.put("mail.smtp.ssl.trust", "smtp.gmail.com"); //not for local deploy

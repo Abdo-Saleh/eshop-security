@@ -16,6 +16,7 @@ services:
       - buildernet
     links:
       - db:db
+      - cyran-smtp:cyran-smtp
     build:
       context: ./cyran-back-end
       dockerfile: Dockerfile
@@ -24,11 +25,13 @@ services:
       DB_PORT: 5432
       DB_USER: postgres
       DB_HOST: db
+      MAIL_HOST: cyran-smtp
     ports:
       - "8080:8080"
     container_name: cyran-back-end
     depends_on:
       - "db"
+      - "cyran-smtp"
   security-eshop:
     image: cyran-front-end
     build:
@@ -42,10 +45,11 @@ services:
   cyran-smtp:
     image: mailhog/mailhog
     ports:
-      - "1025:1025"
+      - "127.0.0.1:1025:1025"
       - "8025:8025"
-    depends_on:
-      - spring-cyran
+    networks:
+      - buildernet
 networks:
   buildernet:
     driver: "bridge"
+ 
