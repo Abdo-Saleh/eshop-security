@@ -63,7 +63,7 @@ services:
       - db
     image: jperdek/whoisapp
     build:
-      context: .
+      context: ./whois
       dockerfile: Dockerfile
     environment:
       DB_PASS: perdekj
