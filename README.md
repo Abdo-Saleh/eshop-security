@@ -15,6 +15,11 @@ This project was developed as part of team project.
     docker-compose -f docker-compose-local-with-mail.yml up  
 
 
+### FOR OPENING FAKE MAIL SERVER AND SEE MAILS  
+ - system must have evidence about email to deliver message  
+ - open in your browser: localhost:8025  
+
+
 ## RESTARTING WITH CLEAN DATA  
  - first call docker-compose with down and after it with up to run again  
 	docker-compose -f docker-compose-local-with-mail.yml down  
