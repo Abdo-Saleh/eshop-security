@@ -1,5 +1,4 @@
 import { Observable, Subject } from 'rxjs';
-
 import { Injectable } from '@angular/core'
 
 
@@ -15,8 +14,6 @@ export class StorageService {
     setItem(key: string, data: any) {
         localStorage.setItem(key, data);
         this.storageSub.next('changed');
-
-
     }
 
     getItem(key: string) {
@@ -25,9 +22,6 @@ export class StorageService {
 
     removeItem(key) {
         localStorage.removeItem(key);
-
         this.storageSub.next('changed');
     }
-
-    
 }

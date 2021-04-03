@@ -4,8 +4,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router'
 import { HttpClient } from '@angular/common/http';
 import * as bcrypt from 'bcryptjs';
-import { UserCreatedComponent } from '../info-snackbars/user-created/user-created.component';
 import { LoggingErrorsService } from '../services/logging-errors.service';
+import { SuccessMessageComponent } from '../info-snackbars/success-message/success-message.component';
+import { ErrorMessageComponent } from '../info-snackbars/error-message/error-message.component';
 
 
 @Component({
@@ -35,8 +36,6 @@ export class RegisterComponent implements OnInit {
       address: new FormControl('', [Validators.required]),
       confirmPassword: new FormControl('', [Validators.required]),
     });
-
-
   }
 
   public setUserOld(user:any):any {
@@ -49,16 +48,16 @@ export class RegisterComponent implements OnInit {
     //users/register/name/{username}/password/{password}
     return this._ourHttpClient.post("http://localhost:8080/register", newUser ).subscribe(
       (response) => {
-        
-
         if( response!= null){
+          SuccessMessageComponent.openSnackBarSuccess(this._snackBar, "You are registered!");
           this.router.navigateByUrl('/signin');
-          this.userCreatedInfo();
         } else {
+          ErrorMessageComponent.openSnackBarError(this._snackBar, "Error occured during registration! Try it again later!");
           this.router.navigateByUrl('/signup');
         }
       },
       (error)=>{
+        ErrorMessageComponent.openSnackBarError(this._snackBar, "Error occured during registration! Try it again later!");
         console.error(error);
         this._loggingErrorsService.captureError(error);
       })
@@ -76,29 +75,23 @@ export class RegisterComponent implements OnInit {
     //users/register/name/{username}/password/{password}
     return this._ourHttpClient.post("http://localhost:8080/signup", newUser, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-
-
         if( response!= null){
+          SuccessMessageComponent.openSnackBarSuccess(this._snackBar, "You are registered!");
           this.router.navigateByUrl('/signin');
-          this.userCreatedInfo();
         } else {
+          ErrorMessageComponent.openSnackBarError(this._snackBar, "Error occured during registration! Try it again later!");
           this.router.navigateByUrl('/signup');
         }
       },
       (error)=>{
+        ErrorMessageComponent.openSnackBarError(this._snackBar, "Error occured during registration! Try it again later!");
         console.error(error);
         this._loggingErrorsService.captureError(error);
       })
   }
 
-  userCreatedInfo() {
-    this._snackBar.openFromComponent(UserCreatedComponent, {
-      duration: 10 * 1000,
-    });
-  }
 
   submit() {
-
     if (this.form.status != "INVALID") {
       this.submitEM.emit(this.form.value);
     }
@@ -111,5 +104,4 @@ export class RegisterComponent implements OnInit {
   }
 
   @Output() submitEM = new EventEmitter();
-
 }

@@ -68,7 +68,9 @@ public class UserControllerRDBS {
 	
 	@Value("${hostIp}")
 	private String hostIp;
-	private static boolean LOCAL_DEPLOY =  true;
+	
+	@Value("${localDeploy}")
+	private static boolean LOCAL_DEPLOY;
 
     /**
      * Method for registering user

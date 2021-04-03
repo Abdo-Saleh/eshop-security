@@ -8,9 +8,9 @@ import { ProductContentComponent } from './product-content/product-content.compo
 import { RegisterComponent } from './register/register.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 
-import { AuthGuard } from './auth-guard'
-import { ShopAssistentGuard } from './shop-assistent-guard'
-import { AdminGuard } from './admin-guard'
+import { AuthGuard } from './services/auth/auth-guard'
+import { ShopAssistentGuard } from './services/auth/shop-assistent-guard'
+import { AdminGuard } from './services/auth/admin-guard'
 import { ManageBoardComponent } from './manage-board/manage-board.component';
 import { ResendPasswordComponent } from './resend-password/resend-password.component';
 import { AdminComponent } from './admin/admin.component';
