@@ -465,7 +465,7 @@ public class UserControllerRDBS {
 
 				//FOR GAME REASONS FOR LOCAL DEPLOYMENT THIS EMAIL WILL BE BLOCKED 
 				//- user cant see emails which are not his own
-				if(LOCAL_DEPLOY && email == "admin@topsecret.com"){
+				if(LOCAL_DEPLOY && (email == "admin@topsecret.com" || email == "user@user.sk")){
 					return false;
 				}
                 // purePassword should be send to User email
