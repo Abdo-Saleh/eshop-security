@@ -10,7 +10,7 @@ Email server: localhost:8025
  
 ## BUILD
 - if you build app on your own and you cant build spring on your own, please download latest image on link below and replace old one in cyran-back-end/target
-  https://ulozto.cz/file/aamGjgZi2TiY/server-0-0-1-snapshot-jar  
+  https://ulozto.cz/file/Vz9WCisknbmC/server-0-0-1-snapshot-jar  
   password: cyran  
 
 ## FOR LOCAL DEPLOYMENT - RECOMMENDED  (WITH WHOIS)
