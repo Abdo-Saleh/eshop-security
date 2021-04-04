@@ -12,4 +12,4 @@ RUN npm install
 # copy codebase to docker codebase
 COPY . .
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "start-prod"]
