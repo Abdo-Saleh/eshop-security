@@ -1,10 +1,11 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ProductCreatedComponent } from '../info-snackbars/product-created/product-created.component';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LoggingInfoService } from '../services/logging-info.service';
 import { LoggingErrorsService } from '../services/logging-errors.service';
+import { SuccessMessageComponent } from '../info-snackbars/success-message/success-message.component';
+import { ErrorMessageComponent } from '../info-snackbars/error-message/error-message.component';
 
 export interface PeriodicElement {
   id: number;
@@ -36,7 +37,7 @@ export class ManageBoardComponent implements OnInit {
   phrase: string;
   lastPhrase: string;
   last: string;
-  option: string;
+  option: string = 'name';
   elements: any;
 
   i:number;
@@ -47,7 +48,7 @@ export class ManageBoardComponent implements OnInit {
     private _loggingInfoService :LoggingInfoService, private _loggingErrorsService: LoggingErrorsService) { }
 
   ngOnInit(): void {
-    this.searchAccordingEmail("ja");
+    this.searchAccordingEmail("ja", true);
 
     this.form = new FormGroup({
       name: new FormControl('', [Validators.required]),
@@ -62,11 +63,6 @@ export class ManageBoardComponent implements OnInit {
     this.searchAccordingEmail("a");
   }
 
-  productCreatedInfo() {
-    this._snackBar.openFromComponent(ProductCreatedComponent, {
-      duration: 10 * 1000,
-    });
-  }
 
   public insert(name:string, description:string, price:number, url:string, quantity:number): void {
     var dictionary = {}
@@ -78,11 +74,12 @@ export class ManageBoardComponent implements OnInit {
 
     this._ourHttpClient.post("http://localhost:8080/create/product", dictionary, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-
+        SuccessMessageComponent.openSnackBarSuccess(this._snackBar, "Product successfully created!");
         return dictionary;
       },
       (error)=>{
         console.error(error);
+        ErrorMessageComponent.openSnackBarError(this._snackBar, "Error during creation occured! Please check connection and try it later!");
         this._loggingErrorsService.captureError(error);
         return dictionary;
       });
@@ -90,37 +87,39 @@ export class ManageBoardComponent implements OnInit {
   }
 
   public search(phrase:string, option:string){
-
     if(option == "name"){
-      this.searchAccordingName(phrase);
+      this.searchAccordingName(phrase, false);
     } else if(option == "email"){
-      this.searchAccordingEmail(phrase);
+      this.searchAccordingEmail(phrase, false);
     } else {
-
+      console.log("Unknown option!")
     }
   }
 
   public doLastSearch(){
     if(this.last=="email"){
-      this.searchAccordingEmail(this.lastPhrase);
+      this.searchAccordingEmail(this.lastPhrase, true);
     } else {
-      this.searchAccordingName(this.lastPhrase);
+      this.searchAccordingName(this.lastPhrase, true);
     }
   }
 
-  public searchAccordingName(name:string): void {
+  public searchAccordingName(name:string, reload:boolean = false): void {
     var dictionary = {}
     dictionary['name'] = name;
     this.last = "name";
     this.lastPhrase = name;
-
+  
     this._ourHttpClient.post("http://localhost:8080/name", dictionary, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-
+        if(!reload){
+          SuccessMessageComponent.openSnackBarSuccess(this._snackBar, "Search results according name prepared!");
+        }
         this.elements = JSON.parse(response.toString());
         return dictionary;
       },
       (error)=>{
+        ErrorMessageComponent.openSnackBarError(this._snackBar, "Error occured while obtaining search results according email! Try it again later!");
         console.error(error);
         this._loggingErrorsService.captureError(error);
         return dictionary;
@@ -137,7 +136,7 @@ export class ManageBoardComponent implements OnInit {
             
       this._ourHttpClient.post("http://localhost:8080/changeEmail", dictionary, { responseType: 'text' as 'json' }).subscribe(
         (response)=>{
-
+          SuccessMessageComponent.openSnackBarSuccess(this._snackBar, "Email successfuly changed to: " + newEmail + "!");
           this.elements = JSON.parse(response.toString());
           this.doLastSearch();
           return dictionary;
@@ -158,7 +157,7 @@ export class ManageBoardComponent implements OnInit {
 
       this._ourHttpClient.post("http://localhost:8080/changeName", dictionary, { responseType: 'text' as 'json' }).subscribe(
         (response)=>{
-
+          SuccessMessageComponent.openSnackBarSuccess(this._snackBar, "Name successfully changed to " + newName + "!");
           this.elements = JSON.parse(response.toString());
           this.doLastSearch();
           return dictionary;
@@ -171,7 +170,9 @@ export class ManageBoardComponent implements OnInit {
 
     }
 
-  public searchAccordingEmail(email:string): void {
+  public searchAccordingEmail(email:string, reload:boolean = false): void {
+    console.log(email);
+
     var dictionary = {}
     dictionary['email'] = email;
     this.last = email;
@@ -179,11 +180,14 @@ export class ManageBoardComponent implements OnInit {
 
     this._ourHttpClient.post("http://localhost:8080/email", dictionary, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-
+        if(!reload){
+          SuccessMessageComponent.openSnackBarSuccess(this._snackBar, "Search results according email prepared!");
+        }
         this.elements = JSON.parse(response.toString());
         return dictionary;
       },
       (error)=>{
+        ErrorMessageComponent.openSnackBarError(this._snackBar, "Error occured while obtaining search results according email! Try it again later!");
         console.error(error);
         this._loggingErrorsService.captureError(error);
         return dictionary;
@@ -193,7 +197,6 @@ export class ManageBoardComponent implements OnInit {
   submit() {
     if (this.form.status != "INVALID") {
       this.insert(this.name, this.description, this.price, 'none', this.quantity);
-      this.productCreatedInfo();
       this.submitEM.emit(this.form.value);
     }
     else {

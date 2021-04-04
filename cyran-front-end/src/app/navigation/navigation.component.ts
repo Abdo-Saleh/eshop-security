@@ -1,9 +1,8 @@
 import { StorageService } from './../StorageService';
-import { BlockScrollStrategy } from '@angular/cdk/overlay';
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../auth-service';
-import { UserLoggedOutComponent } from '../info-snackbars/user-logged-out/user-logged-out.component';
+import { AuthService } from '../services/auth/auth-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SuccessMessageComponent } from '../info-snackbars/success-message/success-message.component';
 
 @Component({
   selector: 'app-navigation',
@@ -12,9 +11,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class NavigationComponent implements OnInit {
   numberOfProductsInCart;
-  constructor(private _auth: AuthService, private _localStorage: StorageService, private _snackBar:MatSnackBar) {
+  constructor(private _auth: AuthService, private _localStorage: StorageService, private _snackBar:MatSnackBar) {}
 
-  }
   ngOnInit(): void {
   }
 
@@ -33,7 +31,7 @@ export class NavigationComponent implements OnInit {
   }
 
   public logout(): void {
-    this.successfulLoggedOutInfo();
+    SuccessMessageComponent.openSnackBarSuccess(this._snackBar, "You has been successfully logged out!");
     localStorage.removeItem("loggedIn");
     localStorage.removeItem("role");
   }
@@ -42,11 +40,5 @@ export class NavigationComponent implements OnInit {
   }
 
   public toAdminBoard(): void {
-  }
-
-  successfulLoggedOutInfo() {
-    this._snackBar.openFromComponent(UserLoggedOutComponent, {
-      duration: 10 * 1000,
-    });
   }
 }

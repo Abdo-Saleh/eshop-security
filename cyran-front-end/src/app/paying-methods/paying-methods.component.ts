@@ -1,11 +1,11 @@
-import { MessageComponent } from './../message/message.component';
+
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router'
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { MatSliderChange } from '@angular/material/slider';
-import { BoughtOrderPreparedComponent } from '../info-snackbars/bought-order-prepared/bought-order-prepared.component';
-import { OrderPaymentSentToEmailComponent } from '../info-snackbars/order-payment-sent-to-email/order-payment-sent-to-email.component';
+import { SuccessMessageComponent } from '../info-snackbars/success-message/success-message.component';
+
 interface Order {
   userName: string;
   shipmentAddress: string;
@@ -13,6 +13,7 @@ interface Order {
   creditCardInfo: { iban: number, valid: string, cvc: string }
 
 }
+
 @Component({
   selector: 'app-paying-methods',
   templateUrl: './paying-methods.component.html',
@@ -108,8 +109,7 @@ export class PayingMethodsComponent implements OnInit {
     }
   }
 
-  saveCard(cardInfo: any): void {
-  }
+  saveCard(cardInfo: any): void {}
 
 
   public saveOrder(cardInfo:any) {
@@ -131,35 +131,31 @@ export class PayingMethodsComponent implements OnInit {
     }
 
     
-
-
     return this._ourHttpClient.post("http://localhost:8080/create/order", this.order).subscribe(
       (response) => {
-
-
         if (response != null) {
           if(response['order']['payed']){
             localStorage.removeItem("shoppingCartProducts");
             localStorage.setItem("boughtProducts", JSON.stringify(response['order']['products']));
-            this.boughtOrderPreparedInfo();
+            SuccessMessageComponent.openSnackBarSuccess(this._snackBar, "Bought order with downloadable products prepared!");
             this.router.navigateByUrl('/completed');
           } else {
             localStorage.removeItem("shoppingCartProducts");
-            this.orderInfoSentToEmailInfo();
+            SuccessMessageComponent.openSnackBarSuccess(this._snackBar, "Order info will be send to your email address!");
             this.router.navigateByUrl('/');
           }
-
         } else {
         }
       },
       (error) => {
 
-        if (error.error.text != "error")
+        if (error.error.text != "error") {
           this.router.navigateByUrl('/completed');
-        else
+        } else {
          this._snackBar.open('Not successfull', '', {
             duration: 1000
           });
+        }
       })
 
     // this.router.navigateByUrl('/completed');
@@ -167,12 +163,6 @@ export class PayingMethodsComponent implements OnInit {
 
   public cardPayment(cardInfo: any) {
     return this.saveOrder(cardInfo);
-  }
-
-  openSnackBar() {
-    this._snackBar.openFromComponent(MessageComponent, {
-      duration: 10 * 1000,
-    });
   }
 
   onInputChange(event: MatSliderChange) {
@@ -185,17 +175,4 @@ export class PayingMethodsComponent implements OnInit {
   public cashOnDeliveryPayment(){
     return this.saveOrder(null);
   }
-
-  boughtOrderPreparedInfo() {
-    this._snackBar.openFromComponent(BoughtOrderPreparedComponent, {
-      duration: 10 * 1000,
-    });
-  }
-
-  orderInfoSentToEmailInfo() {
-    this._snackBar.openFromComponent(OrderPaymentSentToEmailComponent, {
-      duration: 10 * 1000,
-    });
-  }
-
 }

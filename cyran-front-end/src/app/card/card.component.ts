@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { HttpClient } from '@angular/common/http';
-import { AddedToChartComponent } from '../info-snackbars/added-to-chart/added-to-chart.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoggingErrorsService } from '../services/logging-errors.service';
+import { SuccessMessageComponent } from '../info-snackbars/success-message/success-message.component';
 
 @Component({
   selector: 'app-card',
@@ -120,7 +120,6 @@ export class CardComponent implements OnInit {
 
     this._ourHttpClient.post("http://localhost:8080/create/product", dictionary, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-
         return dictionary;
       },
       (error)=>{
@@ -171,7 +170,6 @@ export class CardComponent implements OnInit {
   public getFirstSixProducts(): any {
     return this._ourHttpClient.get("http://localhost:8080/products").subscribe(
       (response)=>{
-
       },
       (error)=>{
         this._loggingErrorsService.captureError(error);
@@ -180,8 +178,6 @@ export class CardComponent implements OnInit {
   }
 
   addedToCartInfo() {
-    this._snackBar.openFromComponent(AddedToChartComponent, {
-      duration: 1000,
-    });
+    SuccessMessageComponent.openSnackBarSuccess(this._snackBar, "Product added to cart!");
   }
 }

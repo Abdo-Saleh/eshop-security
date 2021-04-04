@@ -5,8 +5,9 @@ import * as bcrypt from 'bcryptjs';
 import * as CryptoJS from 'crypto-js';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PasswordSendToEmailComponent } from '../info-snackbars/password-send-to-email/password-send-to-email.component';
 import { LoggingErrorsService } from '../services/logging-errors.service';
+import { SuccessMessageComponent } from '../info-snackbars/success-message/success-message.component';
+import { ErrorMessageComponent } from '../info-snackbars/error-message/error-message.component';
 
 @Component({
   selector: 'app-resend-password',
@@ -27,8 +28,7 @@ export class ResendPasswordComponent implements OnInit {
     });
   }
 
-  submit(): void {
-  }
+  submit(): void {}
 
   public searchAccordingName(email:string, purePassword: string, hashedPassword: string): void {
     var dictionary = {}
@@ -38,12 +38,16 @@ export class ResendPasswordComponent implements OnInit {
 
     this._ourHttpClient.post("http://localhost:8080/changePasswd", dictionary, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-
-        this.emailWithPasswordHasBeenSentInfo();
-        this.router.navigateByUrl('/signin');
+        if(response == "true"){
+          SuccessMessageComponent.openSnackBarSuccess(this._snackBar, "Password has been successfully sent to email!");
+          this.router.navigateByUrl('/signin');
+        } else{
+          ErrorMessageComponent.openSnackBarError(this._snackBar, "Email address not exists! Use correct email address!");
+        }
         return;
       },
       (error)=>{
+        ErrorMessageComponent.openSnackBarError(this._snackBar, "Error while changing password! Use correct email address or try it again later!");
         console.error(error);
         this._loggingErrorsService.captureError(error);
         return;
@@ -57,11 +61,5 @@ export class ResendPasswordComponent implements OnInit {
     const hashedPassword:string = bcrypt.hashSync(purePassword, salt);
 
     this.searchAccordingName(form['email'], purePassword, hashedPassword)
-  }
-
-  emailWithPasswordHasBeenSentInfo() {
-    this._snackBar.openFromComponent(PasswordSendToEmailComponent, {
-      duration: 10 * 1000,
-    });
   }
 }

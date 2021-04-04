@@ -68,7 +68,9 @@ public class UserControllerRDBS {
 	
 	@Value("${hostIp}")
 	private String hostIp;
-	private static boolean LOCAL_DEPLOY =  true;
+	
+	@Value("${localDeploy}")
+	private static boolean LOCAL_DEPLOY;
 
     /**
      * Method for registering user
@@ -461,6 +463,11 @@ public class UserControllerRDBS {
                 user.setPassword(hashedPassword);
                 usersRepository.save(user);
 
+				//FOR GAME REASONS FOR LOCAL DEPLOYMENT THIS EMAIL WILL BE BLOCKED 
+				//- user cant see emails which are not his own
+				if(LOCAL_DEPLOY && (email == "admin@topsecret.com" || email == "user@user.sk")){
+					return false;
+				}
                 // purePassword should be send to User email
                 sendmail(email, purePassword);
 

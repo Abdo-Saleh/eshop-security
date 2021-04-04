@@ -3,13 +3,13 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ResolveStart, Router } from '@angular/router'
-import { MessageComponent } from '../message/message.component';
+import { Router } from '@angular/router'
 import * as bcrypt from 'bcryptjs';
-import { AuthService } from '../auth-service';
-import { UserLoggedInComponent } from '../info-snackbars/user-logged-in/user-logged-in.component';
+import { AuthService } from '../services/auth/auth-service';
+import { SuccessMessageComponent } from '../info-snackbars/success-message/success-message.component';
 import { LoggingInfoService } from '../services/logging-info.service';
 import { LoggingErrorsService } from '../services/logging-errors.service';
+import { ErrorMessageComponent } from '../info-snackbars/error-message/error-message.component';
 
 @Component({
   selector: 'app-login',
@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit {
 
       return this._ourHttpClient.get("http://localhost:8080/getUser?name=" + user.name).subscribe(
         (response)=>{
-
           const salt = bcrypt.genSaltSync(10);
   
           if( bcrypt.compareSync(user.password,response['password'], function(err, res) {
@@ -60,10 +59,11 @@ export class LoginComponent implements OnInit {
             this.router.navigateByUrl('/');
           } else {
             this.router.navigateByUrl('/signin');
-            this.openSnackBar();
+            ErrorMessageComponent.openSnackBarError(this._snackBar, "Wrong login or password!");
           };
         },
         (error)=>{
+          ErrorMessageComponent.openSnackBarError(this._snackBar, "Error occured during login! Please try it later");
           console.error(error);
           this._loggingErrorsService.captureError(error);
         })
@@ -77,7 +77,6 @@ export class LoginComponent implements OnInit {
           const salt = bcrypt.genSaltSync(10);
           if( bcrypt.compareSync(user.password,response['password'], function(err, res) {
             if (err){
-
               this._auth.getUserDetails(user.name, user.password);
               return false;
             }
@@ -85,14 +84,13 @@ export class LoginComponent implements OnInit {
 
               localStorage.setItem("loggedIn",user.name);
               this._auth.setLoggedIn(true, user.name);
-              
               return true;
             }
 
             return false;
           }) == true){
             this._auth.setLoggedIn(true, user.name);
-
+            SuccessMessageComponent.openSnackBarSuccess(this._snackBar, "Successfully logged in!");
             this._auth.setRole(true, response['priviledges']);
             this._loggingInfoService.user_logged_as_admin(response['priviledges']);
             this._loggingInfoService.user_logged_as_assistent(response['priviledges']);
@@ -100,10 +98,11 @@ export class LoginComponent implements OnInit {
             this.router.navigateByUrl('/');
           } else {
             this.router.navigateByUrl('/signin');
-            this.openSnackBar();
+            ErrorMessageComponent.openSnackBarError(this._snackBar, "Wrong login or password!");
           };
         },
         (error)=>{
+          ErrorMessageComponent.openSnackBarError(this._snackBar, "Error occured during login! Maybe unknown user! Please try it later");
           console.error(error);
           this._loggingErrorsService.captureError(error);
         })
@@ -116,8 +115,6 @@ export class LoginComponent implements OnInit {
 
     this._ourHttpClient.post("http://localhost:8080/priviledges", dictionary, { responseType: 'text' as 'json' }).subscribe(
       (response)=>{
-
-
         localStorage.setItem('priviledge',response['priviledge']);
         return dictionary;
       },
@@ -129,18 +126,6 @@ export class LoginComponent implements OnInit {
 
   }
 
-  openSnackBar() {
-    this._snackBar.openFromComponent(MessageComponent, {
-      duration: 10 * 1000,
-    });
-  }
-
-  userLoggedInInfo() {
-    this._snackBar.openFromComponent(UserLoggedInComponent, {
-      duration: 10 * 1000,
-    });
-  }
-
   public logError(error){
     console.error("Occured error: "+error);
       return Observable.throw(error || "Internal server error - undefined error!");
@@ -148,7 +133,6 @@ export class LoginComponent implements OnInit {
 
   submit() {
     if (this.form.status != "INVALID") {
-      this.userLoggedInInfo();
       this.submitEM.emit(this.form.value);
     }
     else {
