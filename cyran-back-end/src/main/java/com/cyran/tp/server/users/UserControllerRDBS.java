@@ -70,7 +70,7 @@ public class UserControllerRDBS {
 	private String hostIp;
 	
 	@Value("${localDeploy}")
-	private static boolean LOCAL_DEPLOY;
+	private boolean localDeploy;
 
     /**
      * Method for registering user
@@ -465,7 +465,7 @@ public class UserControllerRDBS {
 
 				//FOR GAME REASONS FOR LOCAL DEPLOYMENT THIS EMAIL WILL BE BLOCKED 
 				//- user cant see emails which are not his own
-				if(LOCAL_DEPLOY && (email == "admin@topsecret.com" || email == "user@user.sk")){
+				if(localDeploy && (email == "admin@topsecret.com" || email == "user@user.sk")){
 					return false;
 				}
                 // purePassword should be send to User email
@@ -492,7 +492,7 @@ public class UserControllerRDBS {
 		props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.transport.protocol", "smtp");
 		
-		if(LOCAL_DEPLOY){
+		if(localDeploy){
 			System.out.println("------------------------------------------------");
 			System.out.println(hostIp);
 			props.put("mail.smtp.ssl.trust", hostIp);
@@ -507,7 +507,7 @@ public class UserControllerRDBS {
 		
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-				if(LOCAL_DEPLOY){
+				if(localDeploy){
 					return new PasswordAuthentication("tutorialeshop@tutorialeshop.com", "tutorial123456"); //non existing email
 				} else {
 					return new PasswordAuthentication("tutorialeshop@gmail.com", "tutorial123456"); //not for local deploy
@@ -515,7 +515,7 @@ public class UserControllerRDBS {
             }
         });
         Message msg = new MimeMessage(session);
-		if(LOCAL_DEPLOY){
+		if(localDeploy){
 			msg.setFrom(new InternetAddress("tutorialeshop@tutorialeshop.com", false)); //non existing email
 		} else {
 			msg.setFrom(new InternetAddress("tutorialeshop@gmail.com", false));  //not for local deploy	
