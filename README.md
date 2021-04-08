@@ -1,3 +1,6 @@
+## Brief story
+At someplace on this world, a young developer has developed a web application, he forgot that we're living in a world full of Evil Spirits, help him secure his app and report the weaknesses.
+
 # SecurityEshop
 
 This project was developed as part of team project. 
