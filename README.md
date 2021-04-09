@@ -13,8 +13,9 @@ Whois| localhost:5001
 Email server| localhost:8025 
 
 ## Deploy locally
-1. Download docker, docker-compose  
-2. docker-compose up  
+1. Download docker, docker-compose
+2. clone the repository to any random folder
+3. inside the folder eshop-security run `docker-compose up`
 
 #### Note: in case you are on linux, make sure using root  
 
