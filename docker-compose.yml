@@ -8,10 +8,18 @@ services:
       POSTGRES_DB: postgres
     ports:
       - "127.0.0.1:5432:5432"
+    volumes:
+      - ./prepare_data/new.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
     networks:
       - buildernet
   spring-cyran:
     image: fsocun/eshop-backend2
+    container_name: cyran-back-end
     networks:
       - buildernet
     links:
@@ -25,11 +33,9 @@ services:
       MAIL_HOST: cyran-smtp
     ports:
       - "8080:8080"
-    depends_on:
-      - "db"
-      - "cyran-smtp"
   security-eshop:
     image: fsocun/eshop-frontend
+    container_name: cyran-front-end
     ports:
       - "4200:4200"
     depends_on:
@@ -41,6 +47,20 @@ services:
       - "8025:8025"
     networks:
       - buildernet
+  whoisapp:
+    image: fsocun/whois
+    links:
+      - db
+    environment:
+      DB_PASS: perdekj
+      DB_USER: postgres
+      DB_HOST: db
+    ports:
+      - "5001:5001"
+    networks:
+      - buildernet
+    restart: on-failure
 networks:
   buildernet:
     driver: "bridge"
+ 
