@@ -13,7 +13,7 @@ Email server: localhost:8025
 
 ## Deploy locally
 1. Download docker, docker-compose  
-2. docker-compose -f docker-compose-local-with-mail-whois.yml up  
+2. docker-compose up  
 
 #### Note: in case you are on linux, make sure using root  
 
