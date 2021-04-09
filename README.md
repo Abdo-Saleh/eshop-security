@@ -4,12 +4,13 @@ At someplace on this world, a young developer has developed a web application, h
 # SecurityEshop
 
 This project was developed as part of team project. 
- 
-Frontend: localhost:4200  
-Backend (cant be seen): localhost:8080  
-Whois: localhost:5001  
-Email server: localhost:8025  
- 
+
+USAGE  | Command
+------------- | -------------
+Frontend| localhost:4200 
+Backend| localhost:8080 (not accessible)
+Whois| localhost:5001 
+Email server| localhost:8025 
 
 ## Deploy locally
 1. Download docker, docker-compose  
