@@ -5,7 +5,7 @@ At someplace on this world, a young developer has developed a web application, h
 
 This project was developed as part of team project. 
 
-USAGE  | Command
+App  | URL
 ------------- | -------------
 Frontend| localhost:4200 
 Backend| localhost:8080 (not accessible)
