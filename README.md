@@ -22,12 +22,11 @@ Email server: localhost:8025
  - open in your browser: localhost:8025 
 
 ### USAGE
-1.run:
-  docker-compose up
-2.relase references:
-  docker-compose down
-3.remove all stopped containers, all networks not used by at least one container, all images without at least one container associated to them, all build cache:
-  docker system prune -a
+USAGE  | Command
+------------- | -------------
+run  | docker-compose up
+relase references  | docker-compose down
+remove all containers,images, cache | docker system prune -a
 
 
 ### Knows issues
