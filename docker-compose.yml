@@ -12,9 +12,6 @@ services:
       - buildernet
   spring-cyran:
     image: fsocun/eshop-backend2
-    build:
-      context: ./cyran-back-end
-      dockerfile: Dockerfile
     networks:
       - buildernet
     links:
@@ -33,9 +30,6 @@ services:
       - "cyran-smtp"
   security-eshop:
     image: fsocun/eshop-frontend
-    build:
-      context: ./cyran-front-end
-      dockerfile: Dockerfile
     ports:
       - "4200:4200"
     depends_on:
